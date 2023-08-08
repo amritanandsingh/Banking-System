@@ -5,10 +5,10 @@
 #include "user.hpp"
 
 class Customer : public user {
-public:
-    void whoIm() override {
-        std::cout << "I am customer";
-    }
+    public:
+        void whoIm() override {
+            std::cout << "I am customer";
+        }
 };
 
 #endif
