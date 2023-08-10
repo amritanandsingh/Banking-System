@@ -1,10 +1,14 @@
 #include<iostream>
 #include<list>
 #include<vector>
+#include<string>
 #include<sstream>
 #include<fstream>
+#include <ctime>
+#include <iomanip>
+void removeSpecialCharsAndSpaces(std::string &inputString);
 using namespace std;
-class Account;
+//class Account;
 class Customer_function{
     private:
         class Account{
@@ -12,20 +16,37 @@ class Customer_function{
                 string accountnumber,firstName,lastName,address,phoneNumber;
                 string balance;
                 Account(string accountnumber, string firstName, string lastName, string address,string phoneNumber ,string balance);
+                void operator - (double num)
+                {
+                    double bal = std::stod(this->balance);
+                    if(num > bal)
+                    {
+                        throw "Not Sufficient Balance";
+                    }
+                    bal = bal - num;
+                    this->balance =  std::to_string(bal);
+                }
+                void operator + (double num)
+                {
+                    double bal = std::stod(this->balance);
+                    bal = bal + num;
+                    this->balance =  std::to_string(bal);
+                }
+
         };
         vector<string> convertSentenceToVector(const string& sentence);
-        Account& findUser(string);
+        list<Account>::iterator findUser(string);
+        
     public:
         list<Account> head;
         void printingHead();
         int menu();
-        //void withdraw(string userid);
-        //void deposit(string userid);
-        //void view_statement(string userid);
+        void withdraw(string userid);
+        void deposit(string userid);
+        void view_statement(string userid);
         Customer_function();
         ~Customer_function();
-
-
+        void printingStatementInCSV(string , string ,double);
 };
 
 Customer_function::Account::Account(string accountnumber, string firstName, string lastName, string address,string phoneNumber ,string balance)
@@ -88,7 +109,11 @@ Customer_function::~Customer_function() {  // Destructor to write account info t
 
 void Customer_function::printingHead()
 {
-    
+    list<Account>::iterator ptr= head.begin();
+    // for(;ptr!=head.end();ptr++)
+    // {
+    //     cout<<ptr->accountnumber<<endl;
+    // }
     for(const Account & i:head)
     {
         cout<<"Account number "<<i.accountnumber<<endl;
@@ -100,6 +125,7 @@ void Customer_function::printingHead()
         cout<<endl;
     }
 }
+
 int Customer_function::menu()
 {   
     cout<<"0 for Exit "<<endl;
@@ -111,28 +137,91 @@ int Customer_function::menu()
     return i;
 }
 
+void Customer_function::withdraw(string userid)
+{
+    cout << "Enter Amount you Would like to Withdraw: ";
+    double num;
+    try {
+        cin >> num;
+        list<Customer_function::Account>::iterator obj = findUser(userid);  // Note: Changed from const Account&
+        *obj-num;  //operator overloading   
+        printingStatementInCSV(userid,"-",num);
+        if(obj!=head.end())
+        {
+            std::cout<<"withdraw is Done"<<endl;
+        }
+        else{
+            std::cout<<"User is Not Found !"<<endl;
+        }
+        
+    }
+    catch(...) {
+        cout << "You have Not Sufficient Balance to make this transaction" << endl;
+    }
+}
 
+void Customer_function::deposit(string userid)
+{
+    cout << "Enter Amount you Would like to Deposit: ";
+    double num;
+    try {
+        cin >> num;
+        list<Customer_function::Account>::iterator obj = findUser(userid);  // Note: Changed from const Account&
+        *obj+num;  //operator overloading   
+        printingStatementInCSV(userid,"+",num);
+        if(obj!=head.end())
+        {
+            std::cout<<"Deposit is Done"<<endl;
+        }
+        else{
+            std::cout<<"User is Not Found!"<<endl;
+        }
+    }
+    catch(...) {
+        cout << "Something went Wrong" << endl;
+    }
+}
 
-// void Customer_function::withdraw(string userid)
-// {
-//     cout << "Enter Amount you Would like to Withdraw: ";
-//     double num;
-//     try {
-//         cin >> num;
-//         Account &obj = findUser(userid);  // Note: Changed from const Account&
-//         //obj -= num;  // Corrected syntax for subtracting from account balance
-//     }
-//     catch(...) {
-//         cout << "Something Went Wrong During Withdraw" << endl;
-//     }
-// }
+list<Customer_function::Account>::iterator Customer_function::findUser(string userid)
+{
+    list<Account>::iterator ptr = head.begin();
+    for (; ptr != head.end(); ++ptr)
+    {
+        if (ptr->accountnumber == userid)
+            return ptr;
+    }
+    
+    return head.end();  // Returning end iterator if user is not found
+}
 
-// Account & Customer_function::findUser(string userid)
-// {
-//     for (Account &i : head)  // Note: Changed from const Account&
-//     {
-//         if (i.accountnumber == userid)
-//             return i;
-//     }
-//     throw std::runtime_error("User not found (Customer_function::findUser)");  // Throwing an exception if user is not found
-// }
+void Customer_function::printingStatementInCSV(std::string userid, std::string symbol, double d) {
+    // config time
+    time_t now = time(0);
+    std::string dt = ctime(&now);
+    
+    // Remove special characters and spaces from dt
+    removeSpecialCharsAndSpaces(dt);
+
+    std::ofstream obj;
+    obj.open("../csv/transactions.csv", std::ios::app);
+    
+    if (obj.is_open()) {
+        std::string num = std::to_string(d);
+        obj << userid << "," << symbol << "," << num << "," << dt ;
+        obj.close();
+    } else {
+        std::cout << "Something Went Wrong With File" << std::endl;
+    }
+}
+
+bool isSpecialChar(char c) {
+    // Define the set of special characters you want to remove
+    const std::string specialChars = "!@#$%^&*()_+{}[]:\";'<>?,./\\| ";
+
+    return specialChars.find(c) != std::string::npos;
+}
+
+void removeSpecialCharsAndSpaces(std::string &inputString) {
+    // Remove special characters and spaces using the isSpecialChar function
+    inputString.erase(std::remove_if(inputString.begin(), inputString.end(), isSpecialChar), inputString.end());
+}

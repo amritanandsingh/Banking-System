@@ -3,7 +3,10 @@
 int main()
 {
     Customer_function obj;
-    obj.printingHead();
+    //obj.printingHead();
+    obj.deposit("123456");
+    obj.withdraw("123456");
+    //obj.printingStatementInCSV("123456","+",2);
     std::cout<<"hello"<<endl;
     return 0;
 }
