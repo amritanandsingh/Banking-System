@@ -1,10 +1,13 @@
-#include<iostream>
+#include <iostream>
+#include <gtest/gtest.h>
 #include "../header/authentication.hpp"
-using namespace std;
-int main()
-{
+
+TEST(AddTest, PositiveNumbers) {
     authentication obj;
-    obj.print();
-    cout<<obj.logIn("321","321","customer");
-    return 0;
+    EXPECT_EQ(1, obj.logIn("321", "321", "customer"));
+}
+
+int main(int argc, char** argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }

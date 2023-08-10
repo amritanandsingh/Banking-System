@@ -2,13 +2,24 @@
 #define manager_hpp
 
 #include <iostream>
+#include<string>
 #include "user.hpp"
+using namespace std;
 
-class Manager : public user {
-public:
-    void whoIm() override {
-        std::cout << "I am manager";
-    }
+class Manager : public User {
+    public:
+        string whoIm() override {
+            std::cout << "I am manager";
+            return "manager";
+        }
+
+        Manager(){}
+
+        void menu()
+        {
+                cout<<"you want Log In as "<<endl;
+
+        }
 };
 
 #endif

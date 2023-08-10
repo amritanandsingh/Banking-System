@@ -6,8 +6,6 @@
 //#include<stdexcept>
 using namespace std;
 int main() {
-    
-    
     try{
         string genral_user , userid , password ,type;
         
