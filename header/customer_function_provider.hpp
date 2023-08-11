@@ -7,8 +7,8 @@
 #include <ctime>
 #include <iomanip>
 void removeSpecialCharsAndSpaces(std::string &inputString);
+
 using namespace std;
-//class Account;
 class Customer_function{
     private:
         class Account{
@@ -36,6 +36,7 @@ class Customer_function{
         };
         vector<string> convertSentenceToVector(const string& sentence);
         list<Account>::iterator findUser(string);
+        vector<string> convertStringToVector(const string& str, char delimiter);
         
     public:
         list<Account> head;
@@ -214,14 +215,46 @@ void Customer_function::printingStatementInCSV(std::string userid, std::string s
     }
 }
 
+// not a class member function
 bool isSpecialChar(char c) {
     // Define the set of special characters you want to remove
     const std::string specialChars = "!@#$%^&*()_+{}[]:\";'<>?,./\\| ";
 
     return specialChars.find(c) != std::string::npos;
 }
-
+// not a class member function
 void removeSpecialCharsAndSpaces(std::string &inputString) {
     // Remove special characters and spaces using the isSpecialChar function
     inputString.erase(std::remove_if(inputString.begin(), inputString.end(), isSpecialChar), inputString.end());
 }
+
+vector<string> Customer_function::convertStringToVector(const string& str, char delimiter) {
+    vector<string> result;
+    stringstream ss(str);
+    string token;
+    while (getline(ss, token, delimiter)) {
+        result.push_back(token);
+    }
+    return result;
+}
+
+void Customer_function::view_statement(string userid) {
+    ifstream obj;
+    obj.open("../csv/transactions.csv");
+    string s;
+    if (obj.is_open()) {
+        while (getline(obj, s)) {
+            vector<string> ss = convertStringToVector(s, ',');
+            if (ss.size() >= 4 && ss[0] == userid) {
+                std::cout << ss[0] << " " << ss[1] << ss[2] << " " << ss[3] << endl;
+            }
+        }
+        obj.close();
+    }
+    else {
+        cout << "Something Went Wrong while printing Statement" << endl;
+    }
+}
+
+
+        

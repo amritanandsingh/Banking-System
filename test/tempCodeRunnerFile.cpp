@@ -1,1 +1,1 @@
-123456
+manager_function_provider

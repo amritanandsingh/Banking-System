@@ -4,7 +4,7 @@
 #include <iostream>
 #include<string>
 #include "user.hpp"
-//#include "../header/customer_function_provider.hpp"
+#include "../header/customer_function_provider.hpp"
 using namespace std;
 class Customer : public User {
     public:
@@ -27,23 +27,23 @@ class Customer : public User {
         {
             
             cout<<"you want Log In as Customer"<<endl;
-            //Customer_function customer_funtion_object;
+            Customer_function customer_funtion_object;
             int x=0;
             do{
-                //x = customer_funtion_object.menu();
+                x = customer_funtion_object.menu();
                 switch (x)
                 {
                 case 0:
                     cout<<"you pressed 0 now time to Exit menu "<<endl;
                     break;
                 case 1:
-                    //customer_funtion_object.withdraw(userid);
+                    customer_funtion_object.withdraw(userid);
                     break;
                 case 2: 
-                    //customer_funtion_object.deposit(userid);
+                    customer_funtion_object.deposit(userid);
                     break;
                 case 3:
-                    //customer_funtion_object.view_statement(userid);
+                    customer_funtion_object.view_statement(userid);
                 default:
                     cout<<"Wrong Input"<<endl;
                     break;
