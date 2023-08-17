@@ -21,7 +21,7 @@ vector<string> Manager_Function::convertSentenceToVector(const string& sentence)
         return sentences;
 }
 
-
+// approve or reject user
 void Manager_Function::Approve_Reject_User() {
     ifstream obj;
     obj.open("../csv/newAccountQueue.csv");
@@ -58,13 +58,13 @@ void Manager_Function::Approve_Reject_User() {
                 }
             }
         }
-        obj.close(); // Remember to close the file when done
+        obj.close(); //  to close the file when done
         
         // Remove the newAccountQueue.csv file
     
-    //    if (remove("../csv/newAccountQueue.csv") != 0) {
-    //        cout << "Error deleting file newAccountQueue.csv" << "\n";
-    //    }
+       if (remove("../csv/newAccountQueue.csv") != 0) {
+           cout << "Error deleting file newAccountQueue.csv" << "\n";
+       }
     } else {
         cout << "Error in opening file" << "\n";
     }

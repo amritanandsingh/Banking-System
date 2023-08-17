@@ -10,7 +10,7 @@ int main() {
         string genral_user , userid , password ,type;
         
         cout<<"who you are ? if New type 'signup' for Sign Up "<<endl;
-        cin>>genral_user;
+        cin>>genral_user;    // to make requred type of instance.
         Factory factory_obj;
         if(genral_user=="signup")
         {
@@ -19,11 +19,11 @@ int main() {
             cout<<"sign Up successfully"<<endl;
             return 0;
         }
-        User *user= factory_obj.createUser(genral_user);
+        User *user= factory_obj.createUser(genral_user);   // factory pattern call
 
         if(user!=NULL)
         {
-            type = user->whoIm(); // Output: type of class
+            type = user->whoIm(); // Output: type of class 
         }
         if(user==NULL)
         {
@@ -33,11 +33,15 @@ int main() {
         else{
             cout<<endl<<"Enter userID and Password "<<endl;
             cin>>userid>>password;
-            authentication auth_obj;
-            if(auth_obj.logIn(userid,password,type))
+            authentication *auth_obj=new authentication;                // authentication class implementaion
+            if(auth_obj->logIn(userid,password,type))
             {
                 cout<<"sucessfull log in "<<endl;
+                delete auth_obj;
                 user->menu(userid);
+                authentication makeLogout;
+                makeLogout.logOut(userid,password,type);
+
             }
             else{
                 cout<<"Invalid userid or password "<<endl;

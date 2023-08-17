@@ -16,6 +16,7 @@ class Customer_function{
                 string accountnumber,firstName,lastName,address,phoneNumber;
                 string balance;
                 Account(string accountnumber, string firstName, string lastName, string address,string phoneNumber ,string balance);
+                // overloading
                 void operator - (double num)
                 {
                     double bal = std::stod(this->balance);
@@ -26,6 +27,7 @@ class Customer_function{
                     bal = bal - num;
                     this->balance =  std::to_string(bal);
                 }
+                // overloading
                 void operator + (double num)
                 {
                     double bal = std::stod(this->balance);
@@ -49,7 +51,7 @@ class Customer_function{
         ~Customer_function();
         void printingStatementInCSV(string , string ,double);
 };
-
+// construtor
 Customer_function::Account::Account(string accountnumber, string firstName, string lastName, string address,string phoneNumber ,string balance)
 {
     this->accountnumber =  accountnumber ;
@@ -59,7 +61,7 @@ Customer_function::Account::Account(string accountnumber, string firstName, stri
     this->phoneNumber = phoneNumber;
     this->balance = balance;
 }
-
+// converting string into vetor of string
 vector<string> Customer_function::convertSentenceToVector(const string& sentence) {
         vector<string> sentences;
         istringstream iss(sentence);
@@ -71,7 +73,7 @@ vector<string> Customer_function::convertSentenceToVector(const string& sentence
 
         return sentences;
 }
-
+// loading .csv into list
 Customer_function::Customer_function()
 {
     fstream fstream_obj;
@@ -90,7 +92,7 @@ Customer_function::Customer_function()
         cout<<"Error in opening File account.csv";
     }
 }
-
+// saving list into .csv
 Customer_function::~Customer_function() {  // Destructor to write account info to a new CSV file
     std::ofstream newaccount("../csv/newaccount.csv");  // Open the file for writing
 
@@ -107,7 +109,7 @@ Customer_function::~Customer_function() {  // Destructor to write account info t
         std::cout << "Error in opening file newaccount.csv" << std::endl;
     }
 }
-
+// for printing list
 void Customer_function::printingHead()
 {
     list<Account>::iterator ptr= head.begin();
@@ -126,7 +128,7 @@ void Customer_function::printingHead()
         cout<<endl;
     }
 }
-
+// customer menu function 
 int Customer_function::menu()
 {   
     cout<<"0 for Exit "<<endl;
@@ -137,7 +139,7 @@ int Customer_function::menu()
     cin>>i;
     return i;
 }
-
+// implementaion of Withdraw function
 void Customer_function::withdraw(string userid)
 {
     cout << "Enter Amount you Would like to Withdraw: ";
@@ -161,6 +163,7 @@ void Customer_function::withdraw(string userid)
     }
 }
 
+// implementaion of deposit function
 void Customer_function::deposit(string userid)
 {
     cout << "Enter Amount you Would like to Deposit: ";
@@ -183,6 +186,7 @@ void Customer_function::deposit(string userid)
     }
 }
 
+// for finding user from list 
 list<Customer_function::Account>::iterator Customer_function::findUser(string userid)
 {
     list<Account>::iterator ptr = head.begin();
